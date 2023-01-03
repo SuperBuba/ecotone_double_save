@@ -33,8 +33,13 @@ class Merchant
 
     private function __construct(Ulid $id, string $name)
     {
-        $this->id       = $id;
-        $this->name     = $name;
+        $this->id = $id;
+        $this->name = $name;
+    }
+
+    public function id() : Ulid
+    {
+        return $this->id;
     }
 
     #[CommandHandler]
