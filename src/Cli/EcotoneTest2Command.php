@@ -56,7 +56,6 @@ class EcotoneTest2Command extends Command
         $io = new SymfonyStyle($input, $output);
         try {
             $this->bus->send(new MerchantSetOwnerCommand($this->id, 'merchant@test.com'));
-            $io->note(sprintf('merchant updated: %s', $this->id));
 
             return Command::SUCCESS;
         }
