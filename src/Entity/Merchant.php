@@ -6,7 +6,7 @@ use App\Events\MerchantOwnerSetted;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Command\MerchantCreateCommand;
-use Domain\Merchant\Commands\MerchantSetOwnerCommand;
+use App\Command\MerchantSetOwnerCommand;
 use Ecotone\Modelling\Attribute\Aggregate;
 use Ecotone\Modelling\Attribute\AggregateIdentifier;
 use Ecotone\Modelling\Attribute\CommandHandler;

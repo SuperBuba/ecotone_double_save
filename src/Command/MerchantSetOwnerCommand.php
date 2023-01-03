@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Domain\Merchant\Commands;
+namespace App\Command;
 
 use Symfony\Component\Uid\Ulid;
 

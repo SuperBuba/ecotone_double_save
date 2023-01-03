@@ -3,9 +3,11 @@
 namespace App\Cli;
 
 use App\Command\MerchantCreateCommand;
+use App\Entity\Merchant;
+use App\Events\MerchantOwnerSetted;
 use Doctrine\DBAL\Logging\DebugStack;
 use App\Command\MerchantSetOwnerCommand;
-use Ecotone\Modelling\CommandBus;
+use Ecotone\Modelling\EventBus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
@@ -18,21 +20,29 @@ use Symfony\Component\Console\Helper\Table;
 
 
 #[AsCommand(
-    name: 'ecotone:test',
+    name: 'ecotone:test3',
     description: 'Test ecotone command -> event -> command',
 )]
-class EcotoneTestCommand extends Command
+class EcotoneTest3Command extends Command
 {
-    private CommandBus $bus;
+    private EventBus $bus;
 
     private EntityManagerInterface $em;
 
     private DebugStack $logger;
 
-    public function __construct(CommandBus $bus, EntityManagerInterface $em, string $name = null)
+    private Ulid $id;
+
+    public function __construct(EventBus $bus, EntityManagerInterface $em, string $name = null)
     {
         $this->bus  = $bus;
         $this->em   = $em;
+
+        $merchant   = Merchant::create(new MerchantCreateCommand('merchant 1'));
+        $this->em->persist($merchant);
+        $this->em->flush();
+
+        $this->id   = $merchant->id();
 
         $this->logger = new DebugStack();
         $this->em->getConnection()
@@ -46,10 +56,8 @@ class EcotoneTestCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         try {
-            $id = $this->bus->send(new MerchantCreateCommand('merchant 1'));
-
-            $this->bus->send(new MerchantSetOwnerCommand(new Ulid($id), 'merchant@test.com'));
-            $io->note(sprintf('merchant created: %s', $id));
+//            $this->bus->send(new MerchantSetOwnerCommand($this->id, 'merchant@test.com'));
+            $this->bus->publish(new MerchantOwnerSetted('merchant@test.com', new Ulid()));
 
             return Command::SUCCESS;
         }

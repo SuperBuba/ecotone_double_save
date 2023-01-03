@@ -5,7 +5,7 @@ namespace App\Cli;
 use App\Command\MerchantCreateCommand;
 use App\Entity\Merchant;
 use Doctrine\DBAL\Logging\DebugStack;
-use Domain\Merchant\Commands\MerchantSetOwnerCommand;
+use App\Command\MerchantSetOwnerCommand;
 use Ecotone\Modelling\CommandBus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
